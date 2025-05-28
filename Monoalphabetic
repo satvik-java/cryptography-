@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Encrypts text using the given key
+void monoalphabeticEncrypt(char *plaintext, char *cipherKey, char *ciphertext) {
+    for (int i = 0; plaintext[i] != '\0'; i++) {
+        char ch = plaintext[i];
+
+        if (isalpha(ch)) {
+            int index = tolower(ch) - 'a';
+            char enc = cipherKey[index];
+            ciphertext[i] = isupper(ch) ? toupper(enc) : enc;
+        } else {
+            ciphertext[i] = ch;
+        }
+    }
+    ciphertext[strlen(plaintext)] = '\0';
+}
+
+int main() {
+    char plaintext[100], ciphertext[100];
+    // Example key: a shuffled alphabet
+    char cipherKey[27] = "QWERTYUIOPASDFGHJKLZXCVBNM";
+
+    printf("Enter a message: ");
+    fgets(plaintext, sizeof(plaintext), stdin);
+
+    monoalphabeticEncrypt(plaintext, cipherKey, ciphertext);
+
+    printf("Encrypted message: %s\n", ciphertext);
+    return 0;
+}
