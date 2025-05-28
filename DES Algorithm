@@ -1,0 +1,27 @@
+
+from Crypto.Cipher import DES
+from Crypto.Util.Padding import unpad
+import binascii
+
+# Decryption function
+def des_decrypt(ciphertext_hex, key):
+    # Convert hex string to bytes
+    ciphertext = binascii.unhexlify(ciphertext_hex)
+    
+    # Convert key to 8 bytes (DES uses 64-bit = 8-byte key)
+    des = DES.new(key.encode('utf-8'), DES.MODE_ECB)
+    
+    # Decrypt and unpad
+    decrypted = des.decrypt(ciphertext)
+    try:
+        plaintext = unpad(decrypted, 8).decode('utf-8')
+    except:
+        plaintext = decrypted.decode('utf-8', errors='ignore')
+    return plaintext
+
+# --- Example usage ---
+ciphertext_hex = input("Enter hex ciphertext: ")  # example: "85E813540F0AB405"
+key = input("Enter 8-character key: ")            # example: "12345678"
+
+plaintext = des_decrypt(ciphertext_hex, key)
+print("Decrypted text:", plaintext)
