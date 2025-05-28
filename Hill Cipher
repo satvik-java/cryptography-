@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void get_numbers(char *text, int *numbers, int *length) {
+    int k = 0;
+    for (int i = 0; text[i]; i++) {
+        if (isalpha(text[i])) {
+            numbers[k++] = toupper(text[i]) - 'A';
+        }
+    }
+    if (k % 2 != 0) numbers[k++] = 'X' - 'A'; // padding
+    *length = k;
+}
+
+void hill_encrypt(int *plain, int length, int key[2][2], char *result) {
+    for (int i = 0; i < length; i += 2) {
+        int x = (key[0][0] * plain[i] + key[0][1] * plain[i + 1]) % 26;
+        int y = (key[1][0] * plain[i] + key[1][1] * plain[i + 1]) % 26;
+        result[i] = x + 'A';
+        result[i + 1] = y + 'A';
+    }
+    result[length] = '\0';
+}
+
+int main() {
+    char message[] = "meet me at the usual place at ten rather than eight oclock";
+    int key[2][2] = {{9, 4}, {5, 7}};
+    int plain[200], length;
+    char encrypted[200];
+
+    get_numbers(message, plain, &length);
+    hill_encrypt(plain, length, key, encrypted);
+
+    printf("Encrypted message: %s\n", encrypted);
+    return 0;
+}
