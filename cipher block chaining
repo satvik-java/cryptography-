@@ -1,0 +1,21 @@
+from Crypto.Cipher import DES3
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad
+import binascii
+
+# CBC Encryption function
+def encrypt_cbc_3des(plaintext, key):
+    key = DES3.adjust_key_parity(key)  # Adjust key parity
+    iv = get_random_bytes(8)  # 8 bytes IV for CBC mode
+    cipher = DES3.new(key, DES3.MODE_CBC, iv)
+    padded_text = pad(plaintext.encode(), 8)
+    ciphertext = cipher.encrypt(padded_text)
+    return binascii.hexlify(iv + ciphertext).decode()  # IV + Ciphertext
+
+# --- Example usage ---
+plaintext = input("Enter plaintext: ")
+key = get_random_bytes(24)  # 24 bytes = 192 bits for 3DES
+
+cipher_hex = encrypt_cbc_3des(plaintext, key)
+print("Encrypted (CBC with 3DES) in hex:", cipher_hex)
+print("3DES Key (hex):", binascii.hexlify(key).decode())
