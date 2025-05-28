@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <string.h>
+
+// Simple hash function
+unsigned int simpleHash(char *str) {
+    unsigned int hash = 0;
+    int i;
+
+    for (i = 0; str[i] != '\0'; i++) {
+        hash = hash * 31 + str[i]; // 31 is a common prime base in hashing
+    }
+
+    return hash;
+}
+
+int main() {
+    char input[100];
+
+    printf("Enter a string to hash: ");
+    fgets(input, sizeof(input), stdin);
+
+    // Remove trailing newline if any
+    input[strcspn(input, "\n")] = '\0';
+
+    unsigned int hashed = simpleHash(input);
+    printf("Hash value: %u\n", hashed);
+
+    return 0;
+}
