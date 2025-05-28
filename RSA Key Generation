@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+// Extended Euclidean Algorithm to find modular inverse
+int modInverse(int e, int phi) {
+    int t = 0, newt = 1;
+    int r = phi, newr = e;
+    int quotient, temp;
+
+    while (newr != 0) {
+        quotient = r / newr;
+
+        temp = newt;
+        newt = t - quotient * newt;
+        t = temp;
+
+        temp = newr;
+        newr = r - quotient * newr;
+        r = temp;
+    }
+
+    if (r > 1) return -1; // e is not invertible
+    if (t < 0) t += phi;
+    return t;
+}
+
+int main() {
+    int e = 31;
+    int n = 3599;
+
+    // Step 1: Find p and q (given or via factoring n)
+    int p = 59;
+    int
